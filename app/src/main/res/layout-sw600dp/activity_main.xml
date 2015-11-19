@@ -5,17 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:divider="?android:attr/dividerHorizontal"
     tools:context=".MainActivity">
 
     <include
         layout="@layout/toolbar">
     </include>
 
-    <FrameLayout
-        android:id="@+id/main_container"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:orientation="horizontal"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:id="@+id/main_container"
+            android:layout_width="320dp"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:id="@+id/book_details_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

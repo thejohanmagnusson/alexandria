@@ -46,6 +46,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Bundle arguments = getArguments();
+
         if (arguments != null) {
             ean = arguments.getString(BookDetail.EAN_KEY);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
@@ -54,13 +55,11 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         rootView = inflater.inflate(R.layout.fragment_full_book, container, false);
 
         rootView.findViewById(R.id.fab_share).setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 startActivity(shareIntent);
-             }
-         });
-
-        getActivity().setTitle(R.string.book_details);
+            @Override
+            public void onClick(View v) {
+                startActivity(shareIntent);
+            }
+        });
 
         return rootView;
     }
@@ -69,8 +68,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.book_detail, menu);
-
-        //todo: remove
     }
 
     @Override
@@ -109,7 +106,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         String bookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
         ((TextView) rootView.findViewById(R.id.fullBookTitle)).setText(bookTitle);
 
-        //todo: remove commented code
         shareIntent = new Intent(Intent.ACTION_SEND);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
@@ -150,13 +146,5 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
 
-    }
-
-    @Override
-    public void onPause() {
-        super.onDestroyView();
-        if(MainActivity.IS_TABLET && rootView.findViewById(R.id.right_container)==null){
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
     }
 }

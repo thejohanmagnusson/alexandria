@@ -56,8 +56,7 @@
                     android:layout_width="128dp"
                     android:layout_height="205dp"
                     android:id="@+id/bookCover"
-                    android:contentDescription="@string/book_cover"
-                    android:src="@drawable/placeholder_128x205"/>
+                    android:contentDescription="@string/book_cover" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -60,18 +60,6 @@
             android:gravity="center_horizontal"
             android:text="@string/empty_list_of_books"
             android:padding="@dimen/activity_horizontal_margin"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:src="@drawable/ic_plus_black_24dp"
-            app:fabSize="normal"
-            android:layout_marginBottom="@dimen/fab_margin_bottom"
-            android:layout_marginRight="@dimen/fab_margin_right">
-        </android.support.design.widget.FloatingActionButton>
-
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
 

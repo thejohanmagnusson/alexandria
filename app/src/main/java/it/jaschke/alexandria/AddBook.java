@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,13 +27,16 @@ import com.squareup.picasso.Picasso;
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 
-public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AddBook extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
+    private static final String TAG = AddBook.class.getSimpleName();
     private final int LOADER_ID = 1;
-    private final String EAN_CONTENT="eanContent";
+    private final String EAN_CONTENT = "ean_content";
+    private final String FETCHED_EAN = "fetched_ean";
 
-    //moved views to not need to get the view every time
+    private String lastFetchedEan = "";
+
+    //moved views to not need to get the views every time
     private EditText ean;
     private CardView bookCard;
     private TextView bookTitle;
@@ -65,14 +67,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ean =s.toString();
+                String ean = s.toString();
 
-                if(Utility.isEanFormatValid(ean))
+                if(!lastFetchedEan.equals(ean) && Utility.isEanFormatValid(ean)) {
+                    lastFetchedEan = ean;
                     fetchBook(ean);
-
-                //todo: remove
-                //changed to using messaging instead of reloading every time
-//                AddBook.this.restartLoader();
+                }
             }
         });
 
@@ -110,20 +110,31 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         else
             rootView.findViewById(R.id.fab_scan).setEnabled(false);
 
-        if(savedInstanceState!=null){
-            if(savedInstanceState.containsKey(EAN_CONTENT)) {
-                ean.setText(savedInstanceState.getString(EAN_CONTENT));
-                ean.setHint("");
-            }
-        }
-
-        getActivity().setTitle(R.string.add_book);
-
         return rootView;
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(savedInstanceState != null){
+
+            if(savedInstanceState.containsKey(FETCHED_EAN)) {
+                lastFetchedEan = savedInstanceState.getString(FETCHED_EAN);
+            }
+
+            if(savedInstanceState.containsKey(EAN_CONTENT)) {
+                ean.setText(savedInstanceState.getString(EAN_CONTENT));
+                restartLoader();
+            }
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
+
+        if(lastFetchedEan != null)
+            outState.putString(FETCHED_EAN, lastFetchedEan);
 
         //save any typed ean code
         if(ean!=null)
@@ -165,14 +176,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         updateEmptyView();
     }
 
-    //changed to public so activity can reload if book was added
     public void restartLoader(){
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
         String ean= this.ean.getText().toString();
 
         if(!Utility.isEanFormatValid(ean))
@@ -214,15 +223,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         //changed to use Picasso instead, asyncTask is not a good solution for this.
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
-            Log.d(TAG, "Image Url: " + imgUrl);
             Picasso.with(getActivity())
                     .load(imgUrl)
                     .fit()
                     .centerCrop()
                     .into(bookCover);
         }
-        else
-            Log.d(TAG, "No valid image Url: " + imgUrl); //todo: add placeholder with picasso
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
         bookCategories.setText(categories);

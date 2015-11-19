@@ -11,4 +11,9 @@
         android:entryValues="@array/pref_start_values"
         android:defaultValue="@string/pref_default_value"/>
 
+    <PreferenceScreen
+        android:title="@string/about">
+        <intent android:action="it.jaschke.alexandria.ACTION_ABOUT_ACTIVITY"/>
+    </PreferenceScreen>
+
 </PreferenceScreen>

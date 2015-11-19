@@ -2,7 +2,6 @@ package it.jaschke.alexandria;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -76,18 +75,6 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
         bookList.setAdapter(bookListAdapter);
 
-        //using a FAB to give the app a easier and more modern UI
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //callback to main activity method
-                ((Callback) getActivity()).onAddBook();
-            }
-        });
-
-        getActivity().setTitle(R.string.app_name);
-
         return rootView;
     }
 
@@ -110,14 +97,14 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //handle saving if user has typed any search value
-        if(searchText.getText().length() > 0) {
+        if((searchText != null) && (searchText.getText().length() > 0)) {
             outState.putString(EAN_KEY, searchText.getText().toString());
         }
 
         super.onSaveInstanceState(outState);
     }
 
-    private void restartLoader(){
+    public void restartLoader(){
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 

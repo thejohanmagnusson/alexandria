@@ -19,7 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import it.jaschke.alexandria.MainActivity;
 import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.Utility;
 import it.jaschke.alexandria.data.AlexandriaContract;
@@ -38,6 +37,11 @@ public class BookService extends IntentService {
     public static final String DELETE_BOOK = "it.jaschke.alexandria.services.action.DELETE_BOOK";
 
     public static final String EAN = "it.jaschke.alexandria.services.extra.EAN";
+
+    public static final String MESSAGE_EVENT = "MESSAGE_EVENT";
+    public static final String MESSAGE_KEY = "MESSAGE_EXTRA";
+    public static final String BOOK_ADDED_EVENT = "BOOK_ADDED_EVENT";
+    public static final String BOOK_DELETED_EVENT = "BOOK_DELETED_EVENT";
 
     public BookService() {
         super("Alexandria");
@@ -65,7 +69,7 @@ public class BookService extends IntentService {
         if(ean!=null) {
             getContentResolver().delete(AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)), null, null);
 
-            Intent bookIntent = new Intent(MainActivity.BOOK_DELETED_EVENT);
+            Intent bookIntent = new Intent(BOOK_DELETED_EVENT);
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(bookIntent);
         }
     }
@@ -90,8 +94,8 @@ public class BookService extends IntentService {
         if((bookEntry != null) && (bookEntry.getCount() > 0)){
             bookEntry.close();
 
-            Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
-            messageIntent.putExtra(MainActivity.MESSAGE_KEY,getResources().getString(R.string.already_added));
+            Intent messageIntent = new Intent(MESSAGE_EVENT);
+            messageIntent.putExtra(MESSAGE_KEY,getResources().getString(R.string.already_added));
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
 
             return;
@@ -172,8 +176,8 @@ public class BookService extends IntentService {
             if(bookJson.has(ITEMS)){
                 bookArray = bookJson.getJSONArray(ITEMS);
             }else{
-                Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
-                messageIntent.putExtra(MainActivity.MESSAGE_KEY,getResources().getString(R.string.not_found));
+                Intent messageIntent = new Intent(MESSAGE_EVENT);
+                messageIntent.putExtra(MESSAGE_KEY,getResources().getString(R.string.not_found));
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
                 return;
             }
@@ -206,7 +210,7 @@ public class BookService extends IntentService {
                 writeBackCategories(ean,bookInfo.getJSONArray(CATEGORIES) );
             }
 
-            Intent bookIntent = new Intent(MainActivity.BOOK_ADDED_EVENT);
+            Intent bookIntent = new Intent(BOOK_ADDED_EVENT);
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(bookIntent);
 
         } catch (JSONException e) {
