@@ -28,13 +28,11 @@
         <activity
             android:name=".AddBookActivity"
             android:label="@string/add_book"
-            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".BookDetailActivity"
             android:label="@string/book_details"
-            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" >
         </activity>
         <activity
