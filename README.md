@@ -15,7 +15,7 @@ Enumerated in the app's build.gradle, we require:
 - [Android support libraries] (http://developer.android.com/tools/support-library/features.html)
 - [Picasso] (http://square.github.io/picasso/)
 - [ZXing Android embedded] (https://github.com/journeyapps/zxing-android-embedded)
-- [https://github.com/zxing/zxing] (https://github.com/zxing/zxing)
+- [ZXing] (https://github.com/zxing/zxing)
 
 ## Building and Running
 
