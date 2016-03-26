@@ -11,11 +11,11 @@ The app was developed with Android Studio and targets the Android Lollipop 5.1 (
 
 Enumerated in the app's build.gradle, we require:
 
-[Android 5.1] (http://developer.android.com/about/versions/lollipop.html)
-[Android support libraries] (http://developer.android.com/tools/support-library/features.html)
-[Picasso] (http://square.github.io/picasso/)
-[ZXing Android embedded] (https://github.com/journeyapps/zxing-android-embedded)
-[https://github.com/zxing/zxing] (https://github.com/zxing/zxing)
+- [Android 5.1] (http://developer.android.com/about/versions/lollipop.html)
+- [Android support libraries] (http://developer.android.com/tools/support-library/features.html)
+- [Picasso] (http://square.github.io/picasso/)
+- [ZXing Android embedded] (https://github.com/journeyapps/zxing-android-embedded)
+- [https://github.com/zxing/zxing] (https://github.com/zxing/zxing)
 
 ## Building and Running
 
