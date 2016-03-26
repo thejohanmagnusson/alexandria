@@ -1,4 +1,4 @@
-# alexandria - Udacity Android Nanodegree, project 3:1 (Super Duo)
+# Alexandria - Udacity Android Nanodegree, project 3:1 (Super Duo)
 
 The user can scan or enter a ISBN code to fetch details about the book from Google. Books are stored and can be viewed/removed offline.
 This app was broken and the task was to make the app ready for release and fix errors and handle error cases.
